@@ -10,5 +10,5 @@ UPDATE character
 SET max_health=level*10;
 
 UPDATE character
-SET max_health=level*10
+SET max_health=(level+1)*10
 WHERE blessed=1;

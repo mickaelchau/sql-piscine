@@ -1,4 +1,4 @@
-SELECT 
+SELECT DISTINCT 
     crt1.name
 FROM quest  
 INNER JOIN creature AS cr1 ON quest.creature_start=cr1.id 
