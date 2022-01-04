@@ -1,1 +1,1 @@
-SELECT * FROM hotel ORDER BY name,address,rooms;
+SELECT name,address,rooms FROM hotel ORDER BY name, rooms DESC;
