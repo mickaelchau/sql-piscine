@@ -1,0 +1,2 @@
+SELECT * FROM character ORDER BY xp DESC LIMIT 5;
+
