@@ -8,7 +8,8 @@ WHERE name='Kuro';
 
 UPDATE character
 SET max_health=level*10
-WHERE blessed=1;
+WHERE blessed=0;
 
 UPDATE character
-SET max_health=(level+1)*10;
+SET max_health=(level+1)*10
+WHERE blessed=1;
