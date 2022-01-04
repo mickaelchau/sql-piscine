@@ -1,1 +1,1 @@
-SELECT * FROM booking ORDER BY employee_id;
+SELECT * FROM booking ORDER BY id;
