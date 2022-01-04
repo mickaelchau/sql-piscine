@@ -4,6 +4,7 @@ WHERE name='Tilon';
 
 UPDATE character
 SET level=level+1
+SET max_health=130
 WHERE name='Kuro';
 
 UPDATE character
