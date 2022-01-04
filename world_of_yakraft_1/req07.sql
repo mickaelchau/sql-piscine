@@ -1,3 +1,4 @@
+BEGIN;
 UPDATE character
 SET level=15
 WHERE name='Tilon';
@@ -13,3 +14,4 @@ WHERE blessed=0;
 UPDATE character
 SET max_health=(level+1)*10
 WHERE blessed=1;
+END;
