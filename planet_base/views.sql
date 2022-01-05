@@ -9,12 +9,12 @@ INNER JOIN planetary_system ON planetary_system.id=id_system
 WHERE lower(planetary_system.star)='sun' ORDER BY period LIMIT 3;
 
 CREATE OR REPLACE VIEW view_nb_satellite_per_planet AS
-SELECT planet.name AS planet, COALESCE(data.count, 0) AS "number_of_satellites" 
+SELECT planet.name AS planet, COALESCE(data.count, 0) AS "number of satellites" 
 FROM planet LEFT OUTER JOIN (SELECT planet.name,count(*) FROM satellite 
     INNER JOIN planet ON id_planet=planet.id 
     WHERE satellite.radius>500
     GROUP BY planet.name) AS data 
-ON planet.name=data.name ORDER BY "number_of_satellites", planet.name;
+ON planet.name=data.name ORDER BY "number of satellites", planet.name;
 
 CREATE OR REPLACE VIEW view_average_period AS
 SELECT pss.name, COALESCE(last.average_period, 0) AS average_period FROM planetary_system AS pss LEFT JOIN (SELECT data.system, round((sum(period)::float/count(*))::numeric,2) AS average_period                                                               

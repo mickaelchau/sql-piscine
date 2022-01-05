@@ -3,7 +3,9 @@ RETURNS boolean AS
 $$
 BEGIN
     IF (((SELECT population FROM planet WHERE planet.id=origin) < quantity)
-        OR quantity < 0) THEN 
+        OR quantity < 0 OR 
+        (SELECT id_system FROM planet WHERE planet.id=origin) <> 
+        (SELECT id_system FROM planet WHERE planet.id=destination) ) THEN 
         RETURN false;
     END IF;
     UPDATE planet
