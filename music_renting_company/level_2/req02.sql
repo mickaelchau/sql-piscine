@@ -1,11 +1,11 @@
 INSERT INTO album
-VALUES (1, 'Traces'),
-(2, 'Joe Dassin (Les Champs-Élysées)'),
-(3, 'France Gall');
+VALUES (default, 'Traces'),
+(default, 'Joe Dassin (Les Champs-Élysées)'),
+(default, 'France Gall');
 
 INSERT INTO stock
-VALUES (1, 1, 3),
-(2, 2, 5),
-(3, 3, 4);
+VALUES (default, 1, 3),
+(default, 2, 5),
+(default, 3, 4);
 
 
