@@ -21,8 +21,7 @@ $$
 BEGIN
     RETURN QUERY(SELECT satellite.name, planet.name, satellite.radius FROM satellite 
         INNER JOIN planet ON satellite.id_planet=planet.id 
-        INNER JOIN planetary_system ON planet.id_system=planetary_system.id 
-        WHERE (planet.id_system=planetary_system.id AND satellite.radius<=750)
+        WHERE (planet.id_system=syst AND satellite.radius<=750)
         ORDER BY planet.name, satellite.radius DESC, satellite.name);
 END;
 $$ LANGUAGE plpgsql;
