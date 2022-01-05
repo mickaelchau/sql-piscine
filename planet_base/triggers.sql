@@ -26,6 +26,6 @@ WHEN (NEW.name='Earth')
 EXECUTE PROCEDURE add_population();
 
 CREATE OR REPLACE VIEW view_earth_population_evolution AS
-SELECT id, TO_CHAR(date, 'YYYY/MM/DD HH24:MI:SS') AS date, 
+SELECT id, TO_CHAR(date, 'DD/MM/YYYY HH24:MI:SS') AS date, 
 old_population AS "old population", 
 new_population AS "new population" FROM evolution_pop;
