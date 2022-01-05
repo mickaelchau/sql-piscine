@@ -1,5 +1,6 @@
-DROP TABLE IF EXISTS evolutionpop CASCADE;
-DROP TRIGGER IF EXISTS view_earth_population_evolution ON planet;
+DROP TABLE IF EXISTS evolution_pop CASCADE;
+DROP TRIGGER IF EXISTS store_earth_population_updates ON planet;
+DROP VIEW IF EXISTS view_earth_population_evolution;
 
 CREATE TABLE evolution_pop (
   id   SERIAL      PRIMARY KEY,
@@ -18,13 +19,13 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER view_earth_population_evolution AFTER UPDATE 
+CREATE TRIGGER store_earth_population_updates AFTER UPDATE 
 OF population ON planet
 FOR EACH ROW
 WHEN (NEW.name='Earth')
 EXECUTE PROCEDURE add_population();
 
 CREATE OR REPLACE VIEW view_earth_population_evolution AS
-SELECT id, TO_TIMESTAMP(date::text, 'YYYY-MM-DD HH24:MI:SS') AS date, 
+SELECT id, TO_CHAR(date, 'YYYY/MM/DD HH24:MI:SS') AS date, 
 old_population AS "old population", 
 new_population AS "new population" FROM evolution_pop;
