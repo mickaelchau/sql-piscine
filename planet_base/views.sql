@@ -4,7 +4,7 @@ INNER JOIN planetary_system ON planetary_system.id=id_system
 WHERE lower(planetary_system.star)='sun' ORDER BY period LIMIT 3;
 
 CREATE OR REPLACE VIEW view_nb_satellite_per_planet AS
-SELECT planet.name, COALESCE(data.count, 0) as "number_of_satellites" 
+SELECT planet.name AS planet, COALESCE(data.count, 0) AS "number_of_satellites" 
 FROM planet LEFT OUTER JOIN (SELECT planet.name,count(*) FROM satellite 
     INNER JOIN planet ON id_planet=planet.id 
     WHERE satellite.radius>500
