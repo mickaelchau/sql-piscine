@@ -19,13 +19,13 @@ BEGIN
     IF (album_id = -1) THEN
         RETURN false;
     END IF;
-    stock_num := (SELECT s.stock FROM stock AS s WHERE s.alb_id=album_id);
-    IF (stock_num <= 0) THEN
-        RETURN false;
-    END IF;
     stock_id := (SELECT * FROM COALESCE((SELECT id FROM stock AS s 
                 WHERE s.alb_id=album_id), -1));
-    IF (stock_id <> -1) THEN
+    IF (stock_id = -1) THEN
+        RETURN false;
+    END IF;
+    stock_num := (SELECT s.stock FROM stock AS s WHERE s.alb_id=album_id);
+    IF (stock_num <= 0) THEN
         RETURN false;
     END IF;
     matching_rent_id := (SELECT * FROM COALESCE((
