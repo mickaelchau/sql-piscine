@@ -11,20 +11,27 @@ DECLARE
 BEGIN
     customer_id := (SELECT * FROM COALESCE((SELECT id FROM customer                        
         WHERE mail=email), -1)); 
+    IF (customer_id = -1) THEN
+        RETURN false;
+    END IF;
     album_id := (SELECT * FROM COALESCE((SELECT id FROM album AS a                       
         WHERE a.name=album), -1));
+    IF (album_id = -1) THEN
+        RETURN false;
+    END IF;
     stock_num := (SELECT s.stock FROM stock AS s WHERE s.alb_id=album_id);
-    stock_id := (SELECT id FROM stock AS s WHERE s.alb_id=album_id);
+    IF (stock_num <= 0) THEN
+        RETURN false;
+    END IF;
+    stock_id := (SELECT * FROM COALESCE((SELECT id FROM stock AS s 
+                WHERE s.alb_id=album_id), -1));
+    IF (stock_id <> -1) THEN
+        RETURN false;
+    END IF;
     matching_rent_id := (SELECT * FROM COALESCE((
             SELECT id FROM rent 
             WHERE (rent.prs_id=customer_id AND rent.stock_id=album_id)), -1)); 
-    IF (customer_id = -1) THEN
-        RETURN false;
-    ELSIF (album_id = -1) THEN
-        RETURN false;
-    ELSIF (matching_rent_id <> -1) THEN
-        RETURN false;
-    ELSIF (stock_num <= 0) THEN
+    IF (matching_rent_id <> -1) THEN
         RETURN false;
     END IF;
     UPDATE stock
@@ -33,4 +40,25 @@ BEGIN
     INSERT INTO rent VALUES(default, stock_id, customer_id, begin_date, now());
     RETURN true;
 END; 
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION return_album(
+    mail VARCHAR(64), album VARCHAR(64), end_date DATE)
+RETURNS BOOLEAN AS
+$$
+DECLARE
+    customer_id INT;
+    album_id INT;
+BEGIN
+    customer_id := (SELECT * FROM COALESCE((SELECT id FROM customer                        
+        WHERE customer.mail=mail), -1)); 
+    album_id := (SELECT * FROM COALESCE((SELECT id FROM album AS a                       
+        WHERE a.name=album), -1));
+    IF (customer_id = -1) THEN
+        RETURN false;
+    ELSIF (album_id = -1) THEN
+        RETURN false;
+    END IF;
+    RETURN true;
+END
 $$ LANGUAGE plpgsql;
