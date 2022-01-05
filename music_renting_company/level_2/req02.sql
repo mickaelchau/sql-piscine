@@ -1,11 +1,18 @@
-INSERT INTO album
-VALUES (default, 'Traces'),
-(default, 'Joe Dassin (Les Champs-Élysées)'),
-(default, 'France Gall');
+UPDATE stock
+SET stock=stock+3
+WHERE (stock.id=(SELECT stock.id FROM stock 
+        INNER JOIN (SELECT id FROM album WHERE name='Traces') AS data 
+        ON stock.alb_id=data.id));
 
-INSERT INTO stock
-VALUES (default, 1, 3),
-(default, 2, 5),
-(default, 3, 4);
+UPDATE stock
+SET stock=stock+5
+WHERE (stock.id=(SELECT stock.id FROM stock 
+        INNER JOIN (SELECT id FROM album 
+            WHERE name='Joe Dassin (Les Champs-Élysées)') AS data 
+        ON stock.alb_id=data.id));
 
-
+UPDATE stock
+SET stock=stock+4
+WHERE (stock.id=(SELECT stock.id FROM stock 
+        INNER JOIN (SELECT id FROM album WHERE name='France Gall') AS data 
+        ON stock.alb_id=data.id));
