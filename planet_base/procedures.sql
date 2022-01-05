@@ -2,7 +2,8 @@ CREATE OR REPLACE FUNCTION space_travel(origin INT, destination INT, quantity BI
 RETURNS boolean AS
 $$
 BEGIN
-    IF (((SELECT population FROM planet WHERE planet.id=origin) - quantity) < 0) THEN 
+    IF (((SELECT population FROM planet WHERE planet.id=origin) < quantity)
+        OR quantity < 0) THEN 
         RETURN false;
     END IF;
     UPDATE planet
