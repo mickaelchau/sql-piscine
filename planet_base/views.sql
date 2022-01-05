@@ -17,7 +17,7 @@ FROM planet LEFT OUTER JOIN (SELECT planet.name,count(*) FROM satellite
 ON planet.name=data.name ORDER BY "number of satellites", planet.name;
 
 CREATE OR REPLACE VIEW view_average_period AS
-SELECT pss.name, COALESCE(last.average_period, 0) AS average_period FROM planetary_system AS pss LEFT JOIN (SELECT data.system, round((sum(period)::float/count(*))::numeric,2) AS average_period                                                               
+SELECT pss.name as system, COALESCE(last.average_period, 0) AS average_period FROM planetary_system AS pss LEFT JOIN (SELECT data.system, round((sum(period)::float/count(*))::numeric,2) AS average_period                                                               
 FROM (SELECT ps.name as system, planet.name, period                             
     FROM planetary_system AS ps                                                 
     INNER JOIN planet ON ps.id=planet.id_system) AS data                        
