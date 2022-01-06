@@ -1,4 +1,4 @@
-DROP VIEW IF EXISTS view_customers;view_customers
+DROP VIEW IF EXISTS view_customers;
 
 CREATE OR REPLACE FUNCTION get_customers(client_id INT)
 RETURNS INT AS
