@@ -75,7 +75,7 @@ BEGIN
     END IF;
     start_date := (SELECT * FROM COALESCE((SELECT start_date FROM rent AS r                    
         WHERE r.id=rent_id), null)); 
-    IF ((start_date = null) OR (start_date>=end_date)) THEN
+    IF ((start_date = null) OR (start_date>=given_end_date)) THEN
         RETURN false;
     END IF;
     UPDATE rent
