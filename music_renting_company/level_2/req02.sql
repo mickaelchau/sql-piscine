@@ -1,18 +1,14 @@
-UPDATE stock
-SET stock=stock+3
-WHERE (stock.id=(SELECT stock.id FROM stock 
-        INNER JOIN (SELECT id FROM album WHERE name='Traces') AS data 
-        ON stock.alb_id=data.id));
-
-UPDATE stock
-SET stock=stock+5
-WHERE (stock.id=(SELECT stock.id FROM stock 
-        INNER JOIN (SELECT id FROM album 
-            WHERE name='Joe Dassin (Les Champs-Élysées)') AS data 
-        ON stock.alb_id=data.id));
-
-UPDATE stock
-SET stock=stock+4
-WHERE (stock.id=(SELECT stock.id FROM stock 
-        INNER JOIN (SELECT id FROM album WHERE name='France Gall') AS data 
-        ON stock.alb_id=data.id));
+CREATE OR REPLACE FUNCTION add_new_stock(nam VARCHAR(64), amount INT)
+RETURNS VOID AS
+$$
+DECLARE 
+    album_id INT;
+BEGIN
+    album_id := (SELECT album.id FROM album WHERE album.name=nam);
+    INSERT INTO stock
+    VALUES (default, album_id, amount);
+END
+$$ LANGUAGE plpgsql;
+SELECT add_new_stock('Traces', 3);
+SELECT add_new_stock('Joe Dassin (Les Champs-Élysées)', 5);
+SELECT add_new_stock('France Gall', 4);
