@@ -42,4 +42,5 @@ SELECT customer.mail AS email, album.name AS album,
 begin_date AS begin, begin_date+14 AS deadline, end_date as end FROM rent 
     INNER JOIN customer ON rent.prs_id=customer.id
     INNER JOIN stock ON rent.stock_id=stock.id
-    INNER JOIN album ON stock.alb_id=album.id;
+    INNER JOIN album ON stock.alb_id=album.id
+ORDER BY begin_date, email, album;
