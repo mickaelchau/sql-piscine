@@ -73,7 +73,7 @@ BEGIN
         RETURN false;
     END IF;
     UPDATE rent
-    SET rent.end_date=given_end_date
+    SET end_date=given_end_date
         WHERE rent.id=rent_id;
     UPDATE stock
         SET stock=stock+1
