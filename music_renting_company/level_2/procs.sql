@@ -43,7 +43,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION return_album(
-    email VARCHAR(64), album VARCHAR(64), end_date DATE)
+    email VARCHAR(64), album VARCHAR(64), given_end_date DATE)
 RETURNS BOOLEAN AS
 $$
 DECLARE
@@ -73,7 +73,7 @@ BEGIN
         RETURN false;
     END IF;
     UPDATE rent
-    SET rent.end_date=end_date
+    SET rent.end_date=given_end_date
         WHERE rent.id=rent_id;
     UPDATE stock
         SET stock=stock+1
