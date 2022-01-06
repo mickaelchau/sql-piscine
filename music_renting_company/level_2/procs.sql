@@ -43,22 +43,41 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION return_album(
-    mail VARCHAR(64), album VARCHAR(64), end_date DATE)
+    email VARCHAR(64), album VARCHAR(64), end_date DATE)
 RETURNS BOOLEAN AS
 $$
 DECLARE
     customer_id INT;
     album_id INT;
+    get_stock_id INT;
+    rent_id INT;
 BEGIN
     customer_id := (SELECT * FROM COALESCE((SELECT id FROM customer                        
-        WHERE customer.mail=mail), -1)); 
-    album_id := (SELECT * FROM COALESCE((SELECT id FROM album AS a                       
-        WHERE a.name=album), -1));
+        WHERE customer.mail=email), -1)); 
     IF (customer_id = -1) THEN
         RETURN false;
-    ELSIF (album_id = -1) THEN
+    END IF;
+    album_id := (SELECT * FROM COALESCE((SELECT id FROM album AS a                       
+        WHERE a.name=album), -1));
+    IF (album_id = -1) THEN
         RETURN false;
     END IF;
+    get_stock_id := (SELECT * FROM COALESCE((SELECT id FROM stock AS s 
+                WHERE s.alb_id=album_id), -1));
+    IF (get_stock_id = -1) THEN
+        RETURN false;
+    END IF;
+    rent_id := (SELECT * FROM COALESCE((SELECT id FROM rent AS r                       
+        WHERE (r.prs_id=customer_id AND r.stock_id=get_stock_id)), -1));
+    IF (rent_id = -1) THEN
+        RETURN false;
+    END IF;
+    UPDATE rent
+        SET rent.end_date=now()
+        WHERE rent.id=rent_id;
+    UPDATE stock
+        SET stock=stock+1
+        WHERE stock.id=get_stock_id;
     RETURN true;
 END
 $$ LANGUAGE plpgsql;
