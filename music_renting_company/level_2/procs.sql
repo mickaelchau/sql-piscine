@@ -51,6 +51,7 @@ DECLARE
     album_id INT;
     get_stock_id INT;
     rent_id INT;
+    start_date DATE;
 BEGIN
     customer_id := (SELECT * FROM COALESCE((SELECT id FROM customer                        
         WHERE customer.mail=email), -1)); 
@@ -70,6 +71,11 @@ BEGIN
     rent_id := (SELECT * FROM COALESCE((SELECT id FROM rent AS r                       
         WHERE (r.prs_id=customer_id AND r.stock_id=get_stock_id)), -1));
     IF (rent_id = -1) THEN
+        RETURN false;
+    END IF;
+    start_date := (SELECT * FROM COALESCE((SELECT start_date FROM rent AS r                    
+        WHERE r.id=rent_id), null)); 
+    IF ((start_date = null) OR (start_date>=end_date)) THEN
         RETURN false;
     END IF;
     UPDATE rent
