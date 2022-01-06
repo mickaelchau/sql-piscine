@@ -73,7 +73,7 @@ BEGIN
     IF (rent_id = -1) THEN
         RETURN false;
     END IF;
-    start_date := (SELECT * FROM COALESCE((SELECT start_date FROM rent AS r                    
+    start_date := (SELECT * FROM COALESCE((SELECT begin_date FROM rent AS r                    
         WHERE r.id=rent_id), null)); 
     IF ((start_date = null) OR (start_date > given_end_date) 
         OR (start_date = given_end_date)) THEN
