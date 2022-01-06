@@ -37,7 +37,7 @@ BEGIN
     UPDATE stock
         SET stock=stock-1
         WHERE alb_id=album_id;
-    INSERT INTO rent VALUES(default, stock_id, customer_id, begin_date, '');
+    INSERT INTO rent VALUES(default, stock_id, customer_id, begin_date, null);
     RETURN true;
 END; 
 $$ LANGUAGE plpgsql;
