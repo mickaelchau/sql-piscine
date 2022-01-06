@@ -29,4 +29,5 @@ get_customers(rent.prs_id) AS "current_rents"
 FROM rent INNER JOIN customer ON rent.prs_id=customer.id 
 GROUP by email, name, customer.id, rent.prs_id;
 
-
+CREATE OR REPLACE VIEW view_stocks AS 
+SELECT name AS album,stock FROM stock INNER JOIN album ON alb_id=album.id;
