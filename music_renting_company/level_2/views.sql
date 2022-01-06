@@ -24,10 +24,15 @@ END
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE VIEW view_customers AS 
-SELECT mail as email, name, count(*) AS total_rents, 
-get_customers(rent.prs_id) AS "current_rents"
-FROM rent INNER JOIN customer ON rent.prs_id=customer.id 
-GROUP by email, name, customer.id, rent.prs_id;
+SELECT customer.mail, customer.name, COALESCE(total_rents,0) as total_rents, 
+COALESCE(current_rents,0) as current_rents FROM customer 
+LEFT OUTER JOIN (
+    SELECT mail as email, name, count(*) AS total_rents, 
+    get_customers(rent.prs_id) AS "current_rents" FROM customer 
+    INNER JOIN rent ON rent.prs_id=customer.id 
+    GROUP by email, name, customer.id, rent.prs_id) AS data 
+ON customer.mail=data.email ORDER BY customer.mail; 
 
 CREATE OR REPLACE VIEW view_stocks AS 
-SELECT name AS album,stock FROM stock INNER JOIN album ON alb_id=album.id;
+SELECT name AS album,stock FROM stock INNER JOIN album ON alb_id=album.id 
+ORDER BY name;
